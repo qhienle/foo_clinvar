@@ -32,15 +32,14 @@ def parse_arguments():
                         help = "Prints the version")
     parser.add_argument("-u", "--url", \
                         nargs = '?', \
-                        help = "FTP link. DEFAULT=ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/clinvar.vcf.gz.md5")
+                        help = "FTP link. DEFAULT=ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/clinvar.vcf.gz")
     args  = parser.parse_args()
 
     if args.version:
         print(__file__ + " version " + __version__)
         sys.exit()
     elif args.url == None:
-        #args.url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/"
-        args.url = "ftp://ftp.ncbi.nlm.nih.gov/"
+        args.url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/clinvar.vcf.gz"
         print("No FTP URL provided. Using default " + args.url)
     else:
         pass
