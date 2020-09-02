@@ -23,24 +23,33 @@ def parse_arguments():
     """
     Get the command-line options
     """
-    parser = argparse.ArgumentParser(description="Description of App")
-    parser.add_argument('infile', nargs = '?', help = "Input file. REQUIRED")
-    parser.add_argument("-v", "--version", action="store_true", help = "Prints the version")
+    parser = argparse.ArgumentParser(description = "Description of App")
+    parser.add_argument("-v", "--version", \
+                        action = "store_true", \
+                        help = "Prints the version")
+    parser.add_argument("-u", "--url", \
+                        nargs = '?', \
+                        help = "FTP link. DEFAULT=ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/")
     args  = parser.parse_args()
 
     if args.version:
-        print "{} version {}".format(__file__, __version__)
+        print(__file__ + " version " + __version__)
         sys.exit()
-    elif args.infile == None:
-        parser.print_help()
-        sys.exit()
+    elif args.url == None:
+        args.url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/"
+        print("No FTP URL provided. Using default " + args.url)
     else:
-        return args
+        pass
+    return args
 
 #=== The real stuff ============================================================
 
 def main():
     args = parse_arguments()
+
+    # Download the VCF file
+    print("Downloading file from " + args.url)
+    # Parse the VCF file
 
 if __name__ == "__main__":
     main()
