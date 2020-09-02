@@ -58,14 +58,14 @@ def main():
 
     glob_files = args.url + "*"
     print("Downloading files: " + glob_files)
-    subprocess.call(["wget", "glob_files"])
+    subprocess.call(["wget", glob_files])
 
     # TODO: wget the md5 and check for file corruption before parsing
 
     # Parse the VCF file
 
     # Clean-up
-    os.remove("*.vcf.gz*")
+    #os.remove("*.vcf.gz*")
     # TODO: [nice-to-have] Add a volume on the Docker container to store the last files downloaded, for traceability
 
 if __name__ == "__main__":
