@@ -14,8 +14,10 @@ Output: nodes.json and links.json
 """
 
 import sys
+import os
 import argparse
 import subprocess
+
 
 __version__ = "0.1"
 __author__  = "hien@vwetbench.eu"
@@ -49,13 +51,23 @@ def parse_arguments():
 def main():
     args = parse_arguments()
 
-    # Download the VCF file
-    print("Downloading file from " + args.url)
-    subprocess.call(["wget", args.url])
+    # Download the VCF file, including index and md5. We are assuming that NCBI
+    # will maintain the structure of the filenames and aliases to latest release
+    # We could separate the file names and treat these individually, but this
+    # may add some complexity to the command-line arguments and the processing
+    # and make it less transparent to the end user
 
-    #TODO: wget the md5 and check for file corruption before parsing
+    glob_files = args.url + "*"
+    print("Downloading files: " + glob_files)
+    subprocess.call(["wget", "glob_files"])
+
+    # TODO: wget the md5 and check for file corruption before parsing
 
     # Parse the VCF file
+
+    # Clean-up
+    os.remove("*.vcf.gz*")
+    # TODO: [nice-to-have] Add a volume on the Docker container to store the last files downloaded, for traceability
 
 if __name__ == "__main__":
     main()
