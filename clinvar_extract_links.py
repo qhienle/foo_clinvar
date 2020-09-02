@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 
-"""AppName
+"""clinvar_extract_links
 
 USAGE: clinvar_extract_links.py [--options] input_file
 
-A test data crawler for NCBI clinvar. Automatically downloads the latest version of NCBI's clinvar file, as a vcf.gz. The VCF is parsed to generate two JSON files
+A test data crawler for NCBI clinvar to extract dbSNP's RS Identifiers. Automatically downloads the latest version of NCBI's clinvar file, as a vcf.gz. The VCF is parsed to generate two JSON files
 
 - `nodes.json`: clinical variations and
 - `links.json`: links between clinvar IDs - ID and dbsnp IDs - RS.
 
 Input: FTP URL (*e.g.* ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/)
 Output: nodes.json and links.json
+
+For more information on ClinVar, https://www.ncbi.nlm.nih.gov/clinvar/
 """
 
 import sys
