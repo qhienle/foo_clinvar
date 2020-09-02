@@ -15,6 +15,7 @@ Output: nodes.json and links.json
 
 import sys
 import argparse
+import subprocess
 
 __version__ = "0.1"
 __author__  = "hien@vwetbench.eu"
@@ -29,14 +30,15 @@ def parse_arguments():
                         help = "Prints the version")
     parser.add_argument("-u", "--url", \
                         nargs = '?', \
-                        help = "FTP link. DEFAULT=ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/")
+                        help = "FTP link. DEFAULT=ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/clinvar.vcf.gz.md5")
     args  = parser.parse_args()
 
     if args.version:
         print(__file__ + " version " + __version__)
         sys.exit()
     elif args.url == None:
-        args.url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/"
+        #args.url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/"
+        args.url = "ftp://ftp.ncbi.nlm.nih.gov/"
         print("No FTP URL provided. Using default " + args.url)
     else:
         pass
@@ -49,6 +51,10 @@ def main():
 
     # Download the VCF file
     print("Downloading file from " + args.url)
+    subprocess.call(["wget", args.url])
+
+    #TODO: wget the md5 and check for file corruption before parsing
+
     # Parse the VCF file
 
 if __name__ == "__main__":
