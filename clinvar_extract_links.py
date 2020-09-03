@@ -99,7 +99,7 @@ def main():
     # release.
 
     print("Downloading: " + args.url)
-    #subprocess.run(["wget", args.url])
+    subprocess.run(["wget", args.url])
     # Convenient to have if we ever decide to use `vcftools` or `bcftools`
     # tbi = args.url + ".tbi"
     # print("Downloading: " + tbi)
