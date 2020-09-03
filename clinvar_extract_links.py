@@ -74,7 +74,9 @@ def pdbio_vcf2df(vcf):
 #=== The real stuff ============================================================
 
 def main():
-    args = parse_arguments()
+    args   = parse_arguments()
+    infile = os.path.basename(args.url)
+    print("Processing " + infile + "\n")
 
     # Remove existing files from previous downloads and runs
     # TODO: [nice-to-have] Add a volume on the Docker container to store the
@@ -110,7 +112,7 @@ def main():
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
 
-    #df = pdbio_vcf2df("clinvar.vcf.gz")
+    #df = pdbio_vcf2df(infile)
     df = pdbio_vcf2df("tests/foo.vcf.gz")
     df.to_json("nodes.json", orient = "records", indent = 2)
 
@@ -118,8 +120,8 @@ def main():
     links = df[["ID", "INFO_RS"]]
     links.to_json("links.json", orient="records", indent = 2)
 
-    # Clean-up
-    #os.remove("*.vcf.gz*")
+    # TODO: Add this to a weekly `cron` and send e-mail notification upon run
+    # completion.
 
 if __name__ == "__main__":
     main()
