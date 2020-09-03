@@ -118,15 +118,22 @@ def main():
     print("First file to be processed " + vcf_parts[0])
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
-    # shape, before converting to JSON. For the sake of example, we only process the first file
+    # shape, before converting to JSON.
 
-    #df = pdbio_vcf2df(infile)
-    df = pdbio_vcf2df(vcf_parts[0])
-    df.to_json("nodes.json", orient = "records", indent = 2)
+    for part in vcf_parts:
+        count = 0
+        df = pdbio_vcf2df(part)
+        df.to_json("nodes.json", orient = "records", indent = 2)
 
-    # Create the `links.json` file
-    links = df[["ID", "INFO_RS"]]
-    links.to_json("links.json", orient="records", indent = 2)
+        # Create the `links.json` file
+        links = df[["ID", "INFO_RS"]]
+        links.to_json("links.json", orient="records", indent = 2)
+
+        # For the sake of example, we only process the first file
+        # TODO: adapt this for loop for multiprocessing/job arrays
+        count += 1
+        if count >= 1:
+            break
 
     # Clean up
     # TODO: Join the nodes.json and links.json resulting from splitted-files,
