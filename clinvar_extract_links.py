@@ -66,20 +66,25 @@ def pdbio_vcf2df(vcf):
 def main():
     args = parse_arguments()
 
+    # Remove existing files from previous downloads and runs
+    # TODO: [nice-to-have] Add a volume on the Docker container to store the last files downloaded, for traceability
+
+    os.remove("*.vcf.gz*")
+    os.remove("*.json")
+
     # Download the VCF file, including index and md5. We are assuming that NCBI
     # will maintain the structure of the filenames and aliases to the latest
     # release.
 
-    # TODO: remove existing files from previous downloads
     print("Downloading: " + args.url)
     subprocess.run(["wget", args.url])
-    md5 = args.url + ".md5"
-    print("Downloading: " + md5)
-    subprocess.run(["wget", md5])
     # Convenient to have if we ever decide to use `vcftools` or `bcftools`
     # tbi = args.url + ".tbi"
     # print("Downloading: " + tbi)
     # subprocess.run(["wget", tbi])
+    md5 = args.url + ".md5"
+    print("Downloading: " + md5)
+    subprocess.run(["wget", md5])
 
     # TODO: checksum for file corruption before parsing
 
@@ -103,7 +108,6 @@ def main():
 
     # Clean-up
     #os.remove("*.vcf.gz*")
-    # TODO: [nice-to-have] Add a volume on the Docker container to store the last files downloaded, for traceability
 
 if __name__ == "__main__":
     main()
