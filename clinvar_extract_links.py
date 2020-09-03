@@ -118,15 +118,21 @@ def main():
     print("First file to be processed " + vcf_parts[0])
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
-    # shape, before converting to JSON.
+    # shape, before converting to JSON. For the sake of example, we only process the first file
 
     #df = pdbio_vcf2df(infile)
-    df = pdbio_vcf2df("tests/foo.vcf.gz")
+    df = pdbio_vcf2df(vcf_parts[0])
     df.to_json("nodes.json", orient = "records", indent = 2)
 
     # Create the `links.json` file
     links = df[["ID", "INFO_RS"]]
     links.to_json("links.json", orient="records", indent = 2)
+
+    # Clean up
+    # TODO: Join the nodes.json and links.json resulting from splitted-files,
+    # and remove all parts
+    for file in glob.glob("vcfpart-*"):
+        os.remove(file)
 
     # TODO: Add this to a weekly `cron` and send e-mail notification upon run
     # completion.
