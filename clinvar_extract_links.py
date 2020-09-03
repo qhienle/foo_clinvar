@@ -58,10 +58,12 @@ def remove_previous():
         except FileNotFoundError:
             print("File not found: " + file)
 
-def split_file(f):
+def split_file(infile, lines=100000):
     # TODO: zcat f | split -l 1000000 - part-
     # Store and return a list of filenames
-    pass
+    proc_gunzip = subprocess.Popen(["gunzip", "-c", infile], stdout = subprocess.PIPE)
+    proc_split  = subprocess.Popen(["split", "-l", lines, "-", "vcfpart-"], stdin = proc_gunzip.stdout)
+    proc_gunzip.stdout.close()
 
 def pdbio_vcf2df(vcf):
     # We use (pdbio)[https://github.com/dceoy/pdbio] to expand the VCF's
@@ -105,9 +107,10 @@ def main():
     # TODO: If multiprocessors or an HPC is available, it would probably be a
     # good idea to split big files into smaller chunks for parsing in parallel
     # *e.g.* using a job scheduler's job arrays (PBS, LSF,...), Python's
-    # multiprocessing.
+    # multiprocessing module.
 
-    # file_parts = split_file("clinvar.vcf.gz") # TODO: fix case where input filename differs
+    # file_parts = split_file(infile)
+    split_file(infile)
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
