@@ -2,9 +2,10 @@
 
 """clinvar_extract_links
 
-USAGE: clinvar_extract_links.py [--options] input_file
+USAGE: clinvar_extract_links.py [--options] ftp_url
+       clinvar_extract_links.py --help
 
-A test data crawler for NCBI clinvar to extract dbSNP's RS Identifiers. Automatically downloads the latest version of NCBI's clinvar file, as a vcf.gz. The VCF is parsed to generate two JSON files
+A test data crawler for NCBI clinvar. Automatically downloads the latest version of NCBI's ClinVar file, as a GZipped VCF. The downloaded file is parsed to generate two JSON files:
 
 - `nodes.json`: clinical variations and
 - `links.json`: links between clinvar IDs - ID and dbsnp IDs - RS.
@@ -53,8 +54,9 @@ def split_file(f):
     pass
 
 def pdbio_vcf2df(vcf):
-    # We use pdbio to expand the VCF's INFO fields into columns.
-    # The resulting CSV can then be imported as a data frame.
+    # We use (pdbio)[https://github.com/dceoy/pdbio] to expand the VCF's
+    # INFO fields into individual columns. The resulting CSV can then be
+    # imported as a pandas data frame.
     csv_data = subprocess.check_output(["pdbio", "vcf2csv", "--expand-info", vcf])
     csv_data_stream = io.BytesIO(csv_data)
     return pandas.read_csv(csv_data_stream)
@@ -65,10 +67,8 @@ def main():
     args = parse_arguments()
 
     # Download the VCF file, including index and md5. We are assuming that NCBI
-    # will maintain the structure of the filenames and aliases to latest release
-    # We could separate the file names and treat these individually, but this
-    # may add some complexity to the command-line arguments and the processing
-    # and make it less transparent to the end user
+    # will maintain the structure of the filenames and aliases to the latest
+    # release.
 
     # TODO: remove existing files from previous downloads
     print("Downloading: " + args.url)
