@@ -104,7 +104,7 @@ def main():
 
     # Create the `links.json` file
     links = df[["ID", "INFO_RS"]]
-    links.to_json("link.json", orient="records", indent = 2)
+    links.to_json("links.json", orient="records", indent = 2)
 
     # Clean-up
     #os.remove("*.vcf.gz*")
