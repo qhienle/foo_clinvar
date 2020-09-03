@@ -52,6 +52,13 @@ def split_file(f):
     # Store and return a list of filenames
     pass
 
+def vcf2df(vcf):
+    # We use pdbio to expand the VCF's INFO fields into columns.
+    # The resulting CSV can then be imported as a data frame.
+    # We can use pandas' built in JSON export function to create `nodes.json`.
+    pass
+
+
 #=== The real stuff ============================================================
 
 def main():
@@ -63,9 +70,12 @@ def main():
     # may add some complexity to the command-line arguments and the processing
     # and make it less transparent to the end user
 
-    glob_files = args.url + "*"
-    print("Downloading files: " + glob_files)
-    subprocess.call(["wget", glob_files])
+    print("Downloading vcf: " + args.url)
+    subprocess.run(["wget", args.url])
+    print("Downloading md5: " + args.url + ".md5")
+    subprocess.run(["wget", args.url] + ".md5")
+    print("Downloading tbi: " + args.url + ".tbi")
+    subprocess.run(["wget", args.url] + ".tbi")
 
     # TODO: wget the md5 and check for file corruption before parsing
 
@@ -73,11 +83,10 @@ def main():
     # good idea to split big files into smaller chunks for parsing in parallel
     # *e.g.* using a job scheduler's job arrays (PBS, LSF,...), Python's
     # multiprocessing.
-    # file_parts = split_file("clinvar.vcf.gz") # TODO: fix case where input filename differs 
+    # file_parts = split_file("clinvar.vcf.gz") # TODO: fix case where input filename differs
 
-    # Parse the VCF file
-    # We use pdbio to expand the VCF's INFO fields into columns.
-    # The resulting CSV can then be imported as a data frame, and we can use pandas' built in JSON export function to create `nodes.json`.
+    # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
+    # shape, before converting to JSON.
 
     # Clean-up
     #os.remove("*.vcf.gz*")
