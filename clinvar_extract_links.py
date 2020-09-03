@@ -19,6 +19,7 @@ import sys
 import os
 import argparse
 import subprocess
+import pandas as pd
 
 
 __version__ = "0.1"
@@ -52,11 +53,14 @@ def split_file(f):
     # Store and return a list of filenames
     pass
 
-def vcf2df(vcf):
+def pdbio_vcf2df(vcf):
     # We use pdbio to expand the VCF's INFO fields into columns.
     # The resulting CSV can then be imported as a data frame.
-    # We can use pandas' built in JSON export function to create `nodes.json`.
-    pass
+    csv_file = vcf + ".csv"
+    out_file = ">" + csv_file
+    subprocess.run(["pdbio", "vcf2csv", "--expand-info", vcf, out_file])
+    df = pd.read_csv(csv_file)
+    return df
 
 
 #=== The real stuff ============================================================
@@ -70,25 +74,31 @@ def main():
     # may add some complexity to the command-line arguments and the processing
     # and make it less transparent to the end user
 
+    # TODO: remove existing files from previous downloads
     print("Downloading: " + args.url)
     subprocess.run(["wget", args.url])
     md5 = args.url + ".md5"
     print("Downloading: " + md5)
     subprocess.run(["wget", md5])
-    tbi = args.url + ".tbi"
-    print("Downloading: " + tbi)
-    subprocess.run(["wget", args.url])
+    # Convenient to have if we ever decide to use `vcftools` or `bcftools`
+    # tbi = args.url + ".tbi"
+    # print("Downloading: " + tbi)
+    # subprocess.run(["wget", tbi])
 
-    # TODO: wget the md5 and check for file corruption before parsing
+    # TODO: checksum for file corruption before parsing
 
     # TODO: If multiprocessors or an HPC is available, it would probably be a
     # good idea to split big files into smaller chunks for parsing in parallel
     # *e.g.* using a job scheduler's job arrays (PBS, LSF,...), Python's
     # multiprocessing.
+
     # file_parts = split_file("clinvar.vcf.gz") # TODO: fix case where input filename differs
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
+    #df = pdbio_vcf2df("clinvar.vcf.gz")
+    df = pdbio_vcf2df("tests/foo.vcf.gz")
+    print(df)
 
     # Clean-up
     #os.remove("*.vcf.gz*")
