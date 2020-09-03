@@ -122,13 +122,17 @@ def main():
 
     for part in vcf_parts:
         count = 0
-        df = pdbio_vcf2df(part)
+        # pdbio_vcf2df requires the file name extension
+        part_dot_vcf = part + ".vcf"
+        os.rename(part, part_dot_vcf)
+        df = pdbio_vcf2df(part_dot_vcf)
         df.to_json("nodes.json", orient = "records", indent = 2)
 
         # Create the `links.json` file
         links = df[["ID", "INFO_RS"]]
         links.to_json("links.json", orient="records", indent = 2)
 
+        os.remove(part_dot_vcf)
         # For the sake of example, we only process the first file
         # TODO: adapt this for loop for multiprocessing/job arrays
         count += 1
