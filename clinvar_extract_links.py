@@ -55,13 +55,9 @@ def split_file(f):
 def pdbio_vcf2df(vcf):
     # We use pdbio to expand the VCF's INFO fields into columns.
     # The resulting CSV can then be imported as a data frame.
-    csv_file = vcf + ".csv"
-    out_file = ">" + csv_file
     csv_data = subprocess.check_output(["pdbio", "vcf2csv", "--expand-info", vcf])
     csv_data_stream = io.BytesIO(csv_data)
-    df = pandas.read_csv(csv_data_stream)
-    return df
-
+    return pandas.read_csv(csv_data_stream)
 
 #=== The real stuff ============================================================
 
@@ -96,9 +92,10 @@ def main():
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
+
     #df = pdbio_vcf2df("clinvar.vcf.gz")
     df = pdbio_vcf2df("tests/foo.vcf.gz")
-    print(df)
+    df.to_json("nodes.json", orient = "records")
 
     # Clean-up
     #os.remove("*.vcf.gz*")
