@@ -115,7 +115,7 @@ def main():
     # multiprocessing module.
 
     vcf_parts = split_file(infile)
-    print(vcf_parts)
+    print("First file to be processed" + vcf_parts[0])
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
