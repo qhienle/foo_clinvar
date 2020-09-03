@@ -47,6 +47,11 @@ def parse_arguments():
         pass
     return args
 
+def split_file(f):
+    # TODO: zcat f | split -l 1000000 - part-
+    # Store and return a list of filenames
+    pass
+
 #=== The real stuff ============================================================
 
 def main():
@@ -64,7 +69,15 @@ def main():
 
     # TODO: wget the md5 and check for file corruption before parsing
 
+    # TODO: If multiprocessors or an HPC is available, it would probably be a
+    # good idea to split big files into smaller chunks for parsing in parallel
+    # *e.g.* using a job scheduler's job arrays (PBS, LSF,...), Python's
+    # multiprocessing.
+    # file_parts = split_file("clinvar.vcf.gz") # TODO: fix case where input filename differs 
+
     # Parse the VCF file
+    # We use pdbio to expand the VCF's INFO fields into columns.
+    # The resulting CSV can then be imported as a data frame, and we can use pandas' built in JSON export function to create `nodes.json`.
 
     # Clean-up
     #os.remove("*.vcf.gz*")
