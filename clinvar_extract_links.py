@@ -70,12 +70,14 @@ def main():
     # may add some complexity to the command-line arguments and the processing
     # and make it less transparent to the end user
 
-    print("Downloading vcf: " + args.url)
+    print("Downloading: " + args.url)
     subprocess.run(["wget", args.url])
-    print("Downloading md5: " + args.url + ".md5")
-    subprocess.run(["wget", args.url] + ".md5")
-    print("Downloading tbi: " + args.url + ".tbi")
-    subprocess.run(["wget", args.url] + ".tbi")
+    md5 = args.url + ".md5"
+    print("Downloading: " + md5)
+    subprocess.run(["wget", md5])
+    tbi = args.url + ".tbi"
+    print("Downloading: " + tbi)
+    subprocess.run(["wget", args.url])
 
     # TODO: wget the md5 and check for file corruption before parsing
 
