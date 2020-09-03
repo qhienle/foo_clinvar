@@ -62,7 +62,7 @@ def split_file(infile, lines=100000):
     # TODO: zcat f | split -l 1000000 - part-
     # Store and return a list of filenames
     proc_gunzip = subprocess.Popen(["gunzip", "-c", infile], stdout = subprocess.PIPE)
-    proc_split  = subprocess.Popen(["split", "-l", 100000, "-", "vcfpart-"], stdin = proc_gunzip.stdout)
+    proc_split  = subprocess.Popen(["split", "-l", str(lines), "-", "vcfpart-"], stdin = proc_gunzip.stdout)
     proc_gunzip.stdout.close()
 
 def pdbio_vcf2df(vcf):
