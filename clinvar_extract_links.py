@@ -20,6 +20,7 @@ import sys, os, io
 import argparse
 import subprocess
 import pandas
+import glob
 
 
 __version__ = "0.1"
@@ -64,6 +65,10 @@ def split_file(infile, lines=100000):
     proc_gunzip = subprocess.Popen(["gunzip", "-c", infile], stdout = subprocess.PIPE)
     proc_split  = subprocess.Popen(["split", "-l", str(lines), "-", "vcfpart-"], stdin = proc_gunzip.stdout)
     proc_gunzip.stdout.close()
+    vcf_parts = []
+    for file in glob.glob("vcfpart-*"):
+        vcf_parts.append(file)
+    return vcf_parts
 
 def pdbio_vcf2df(vcf):
     # We use (pdbio)[https://github.com/dceoy/pdbio] to expand the VCF's
