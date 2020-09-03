@@ -95,11 +95,11 @@ def main():
 
     #df = pdbio_vcf2df("clinvar.vcf.gz")
     df = pdbio_vcf2df("tests/foo.vcf.gz")
-    df.to_json("nodes.json", orient = "records")
+    df.to_json("nodes.json", orient = "records", indent = 2)
 
     # Create the `links.json` file
     links = df[["ID", "INFO_RS"]]
-    links.to_json("link.json", orient="records")
+    links.to_json("link.json", orient="records", indent = 2)
 
     # Clean-up
     #os.remove("*.vcf.gz*")
