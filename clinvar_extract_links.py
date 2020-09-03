@@ -15,11 +15,10 @@ Output: nodes.json and links.json
 For more information on ClinVar, https://www.ncbi.nlm.nih.gov/clinvar/
 """
 
-import sys
-import os
+import sys, os, io
 import argparse
 import subprocess
-import pandas as pd
+import pandas
 
 
 __version__ = "0.1"
@@ -58,8 +57,9 @@ def pdbio_vcf2df(vcf):
     # The resulting CSV can then be imported as a data frame.
     csv_file = vcf + ".csv"
     out_file = ">" + csv_file
-    subprocess.run(["pdbio", "vcf2csv", "--expand-info", vcf, out_file])
-    df = pd.read_csv(csv_file)
+    csv_data = subprocess.check_output(["pdbio", "vcf2csv", "--expand-info", vcf])
+    csv_data_stream = io.BytesIO(csv_data)
+    df = pandas.read_csv(csv_data_stream)
     return df
 
 
