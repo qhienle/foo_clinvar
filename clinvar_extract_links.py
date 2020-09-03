@@ -114,8 +114,8 @@ def main():
     # *e.g.* using a job scheduler's job arrays (PBS, LSF,...), Python's
     # multiprocessing module.
 
-    # file_parts = split_file(infile)
-    split_file(infile)
+    vcf_parts = split_file(infile)
+    print(vcf_parts)
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
