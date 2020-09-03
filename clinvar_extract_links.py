@@ -48,6 +48,16 @@ def parse_arguments():
         pass
     return args
 
+def remove_previous():
+    # Remove files from previous runs, based on default options
+    # TODO: Use glob to get a file list of *.vcf.gz* and *.json ?
+    rm_files = ["clinvar.vcf.gz", "clinvar.vcf.gz.md5", "clinvar.vcf.gz.tbi", "links.json", "nodes.json"]
+    for file in rm_files:
+        try:
+            os.remove(file)
+        except FileNotFoundError:
+            print("File not found: " + file)
+
 def split_file(f):
     # TODO: zcat f | split -l 1000000 - part-
     # Store and return a list of filenames
@@ -67,10 +77,12 @@ def main():
     args = parse_arguments()
 
     # Remove existing files from previous downloads and runs
-    # TODO: [nice-to-have] Add a volume on the Docker container to store the last files downloaded, for traceability
+    # TODO: [nice-to-have] Add a volume on the Docker container to store the
+    # last files downloaded, for traceability
+    # TODO: Add a command-line option to skip this step, for re-using files
+    # from previous downloads
 
-    os.remove("*.vcf.gz*")
-    os.remove("*.json")
+    remove_previous()
 
     # Download the VCF file, including index and md5. We are assuming that NCBI
     # will maintain the structure of the filenames and aliases to the latest
