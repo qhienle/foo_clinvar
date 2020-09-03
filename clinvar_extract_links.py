@@ -99,7 +99,7 @@ def main():
     # release.
 
     print("Downloading: " + args.url)
-    subprocess.run(["wget", args.url])
+    #subprocess.run(["wget", args.url])
     # Convenient to have if we ever decide to use `vcftools` or `bcftools`
     # tbi = args.url + ".tbi"
     # print("Downloading: " + tbi)
@@ -116,7 +116,7 @@ def main():
     # multiprocessing module.
 
     vcf_parts = split_file(infile)
-        print("First file to be processed " + vcf_parts[0])
+    print("First file to be processed " + vcf_parts[0])
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
