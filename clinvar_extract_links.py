@@ -65,6 +65,7 @@ def split_file(infile, lines=100000):
     proc_gunzip = subprocess.Popen(["gunzip", "-c", infile], stdout = subprocess.PIPE)
     proc_split  = subprocess.Popen(["split", "-l", str(lines), "-", "vcfpart-"], stdin = proc_gunzip.stdout)
     proc_gunzip.stdout.close()
+    proc_split.communicate()
     vcf_parts = []
     for file in glob.glob("vcfpart-*"):
         vcf_parts.append(file)
