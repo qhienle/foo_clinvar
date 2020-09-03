@@ -97,6 +97,10 @@ def main():
     df = pdbio_vcf2df("tests/foo.vcf.gz")
     df.to_json("nodes.json", orient = "records")
 
+    # Create the `links.json` file
+    links = df[["ID", "INFO_RS"]]
+    links.to_json("link.json", orient="records")
+
     # Clean-up
     #os.remove("*.vcf.gz*")
     # TODO: [nice-to-have] Add a volume on the Docker container to store the last files downloaded, for traceability
