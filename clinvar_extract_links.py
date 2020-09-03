@@ -63,6 +63,7 @@ def split_file(infile, lines=100000):
     # TODO: zcat f | split -l 1000000 - part-
     # Store and return a list of filenames
     proc_gunzip = subprocess.Popen(["gunzip", "-c", infile], stdout = subprocess.PIPE)
+    proc_gunzip.wait()
     proc_split  = subprocess.Popen(["split", "-l", str(lines), "-", "vcfpart-"], stdin = proc_gunzip.stdout)
     proc_gunzip.stdout.close()
     vcf_parts = []
@@ -115,7 +116,7 @@ def main():
     # multiprocessing module.
 
     vcf_parts = split_file(infile)
-    print("First file to be processed " + vcf_parts[0])
+        print("First file to be processed " + vcf_parts[0])
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
