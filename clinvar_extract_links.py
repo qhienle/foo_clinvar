@@ -59,17 +59,30 @@ def remove_previous():
         except FileNotFoundError:
             print("File not found: " + file)
 
-def split_file(infile, lines=100000):
+def split_file(gzfile, max_lines=100000):
     # TODO: zcat f | split -l 1000000 - part-
-    # Store and return a list of filenames
-    proc_gunzip = subprocess.Popen(["gunzip", "-c", infile], stdout = subprocess.PIPE)
-    proc_split  = subprocess.Popen(["split", "-l", str(lines), "-", "vcfpart-"], stdin = proc_gunzip.stdout)
-    proc_gunzip.stdout.close()
-    proc_split.communicate()
-    vcf_parts = []
-    for file in glob.glob("vcfpart-*"):
-        vcf_parts.append(file)
-    return vcf_parts
+    # Split big file and return a list of filenames
+    count_lines = 1
+    count_files = 1
+    outfiles = []
+    with gzip.open(infile, "rb") as gz:
+        outfile = "part-" + str(count_files) + ".vcf"
+        part = open(outfile, "wb")
+        for line in gz:
+            if count_lines <= max_lines:
+                part.write(line)
+                count_lines += 1
+            else:
+                part.close()
+                outfiles.append(outfile)
+                count_lines = 1
+                count_files += 1
+                outfile = "part-" + str(count_files) + ".vcf"
+                part = open(outfile, "wb")
+                part.write(line)
+        part.close()
+        outfiles.append(outfile)
+    return outfiles
 
 def pdbio_vcf2df(vcf):
     # We use (pdbio)[https://github.com/dceoy/pdbio] to expand the VCF's
