@@ -106,21 +106,21 @@ def main():
     # TODO: Add a command-line option to skip this step, for re-using files
     # from previous downloads
 
-    #remove_previous()
+    remove_previous()
 
     # Download the VCF file, including index and md5. We are assuming that NCBI
     # will maintain the structure of the filenames and aliases to the latest
     # release.
 
     print("Downloading: " + args.url)
-    #subprocess.run(["wget", args.url])
+    subprocess.run(["wget", args.url])
     # Convenient to have if we ever decide to use `vcftools` or `bcftools`
     # tbi = args.url + ".tbi"
     # print("Downloading: " + tbi)
     # subprocess.run(["wget", tbi])
     md5 = args.url + ".md5"
     print("Downloading: " + md5)
-    #subprocess.run(["wget", md5])
+    subprocess.run(["wget", md5])
 
     # TODO: checksum for file corruption before parsing
 
