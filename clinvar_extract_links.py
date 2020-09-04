@@ -10,7 +10,7 @@ A test data crawler for NCBI clinvar. Automatically downloads the latest version
 - `nodes.json`: clinical variations and
 - `links.json`: links between clinvar IDs - ID and dbsnp IDs - RS.
 
-Input: FTP URL (*e.g.* ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/)
+Input: FTP URL (*e.g.* ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/clinvar.vcf.gz)
 Output: nodes.json and links.json
 
 For more information on ClinVar, https://www.ncbi.nlm.nih.gov/clinvar/
@@ -138,14 +138,14 @@ def main():
     for part in vcf_parts:
         count = 0
         # pdbio_vcf2df requires the file name extension
-        df = pdbio_vcf2df(part)
+        df = pdbio_vcf2df("tests/foo.vcf.gz")
         df.to_json("nodes.json", orient = "records", indent = 2)
 
         # Create the `links.json` file
         links = df[["ID", "INFO_RS"]]
         links.to_json("links.json", orient="records", indent = 2)
 
-        os.remove(part_dot_vcf)
+        os.remove(part)
         # For the sake of example, we only process the first file
         # TODO: adapt this for loop for multiprocessing/job arrays
         count += 1
