@@ -21,6 +21,7 @@ import argparse
 import subprocess
 import pandas
 import glob
+import gzip
 
 
 __version__ = "0.1"
