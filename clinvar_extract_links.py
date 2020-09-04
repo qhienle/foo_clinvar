@@ -66,7 +66,7 @@ def split_file(gzfile, max_lines=100000):
     count_lines = 1
     count_files = 1
     outfiles = []
-    with gzip.open(infile, "rb") as gz:
+    with gzip.open(gzfile, "rb") as gz:
         outfile = "part-" + str(count_files) + ".vcf"
         part = open(outfile, "wb")
         for line in gz:
