@@ -138,9 +138,7 @@ def main():
     for part in vcf_parts:
         count = 0
         # pdbio_vcf2df requires the file name extension
-        part_dot_vcf = part + ".vcf"
-        os.rename(part, part_dot_vcf)
-        df = pdbio_vcf2df(part_dot_vcf)
+        df = pdbio_vcf2df(part)
         df.to_json("nodes.json", orient = "records", indent = 2)
 
         # Create the `links.json` file
