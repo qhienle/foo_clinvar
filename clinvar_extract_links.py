@@ -60,7 +60,7 @@ def remove_previous():
         except FileNotFoundError:
             print("File not found: " + file)
 
-def split_file(gzfile, max_lines=100000):
+def split_file(gzfile, max_lines=10000):
     # TODO: zcat f | split -l 1000000 - part-
     # Split big file and return a list of filenames
     count_lines = 1
