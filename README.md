@@ -14,6 +14,7 @@ A test data crawler for NCBI clinvar. Automatically downloads the latest version
 3. `docker build -t clinvar .`
 4. `docker run -it clinvar`
 5. `python3 clinvar_extract_links.py`
+6. `head -n 25 nodes.json links.json`
 
 For more information on usage, please type: `clinvar_extract_links.py --help`
 Comments, explanations and suggestions for improvements are included in `clinvar_extract_links.py`.
@@ -43,6 +44,13 @@ Input: FTP URL (*e.g.* ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/
 
 Output: nodes.json and links.json
 
+## Comments and potential improvements
+
+- [nice-to-have] Add a volume on the Docker container to store the last files downloaded, for traceability
+- Add a command-line option to skip the step of pre-flight clean-up, for re-using files from previous downloads
+- MD5 checksum for file corruption before parsing
+- If multiprocessors or an HPC is available, it would probably be a good idea to split big files into smaller chunks for parsing in parallel *e.g.* using a job scheduler's job arrays (PBS, LSF,...), Python's multiprocessing module.
+- Add this to a weekly `cron` and send e-mail notification upon run completion.
 
 ## References
 
