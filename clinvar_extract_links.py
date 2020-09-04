@@ -137,7 +137,6 @@ def main():
 
     for part in vcf_parts:
         count = 0
-        # pdbio_vcf2df requires the file name extension
         df = pdbio_vcf2df("tests/foo.vcf.gz")
         df.to_json("nodes.json", orient = "records", indent = 2)
 
@@ -157,6 +156,8 @@ def main():
     # and remove all parts
     for file in glob.glob("vcfpart-*"):
         os.remove(file)
+
+    df = pdbio_vcf2df(infile)
 
     # TODO: Add this to a weekly `cron` and send e-mail notification upon run
     # completion.
