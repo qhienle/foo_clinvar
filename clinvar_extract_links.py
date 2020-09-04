@@ -22,6 +22,7 @@ import subprocess
 import pandas
 import glob
 import gzip
+import vcf
 
 
 __version__ = "0.1"
@@ -92,6 +93,9 @@ def pdbio_vcf2df(vcf):
     csv_data = subprocess.check_output(["pdbio", "vcf2csv", "--expand-info", vcf])
     csv_data_stream = io.BytesIO(csv_data)
     return pandas.read_csv(csv_data_stream)
+
+def parse_INFO(vcf):
+    pass
 
 #=== The real stuff ============================================================
 
