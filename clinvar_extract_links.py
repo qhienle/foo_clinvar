@@ -129,14 +129,18 @@ def main():
     # *e.g.* using a job scheduler's job arrays (PBS, LSF,...), Python's
     # multiprocessing module.
 
+    #print("Processing the entire file. This might take a while...")
+    #df = pdbio_vcf2df(infile)
+
+    print("Splitting big file...")
     vcf_parts = split_file(infile)
-    print("First file to be processed " + vcf_parts[0])
 
     # Parse the VCF file into a pandas dataframe, that we can manipulate and re-
     # shape, before converting to JSON.
 
     for part in vcf_parts:
         count = 0
+        print("Processing " + part)
         df = pdbio_vcf2df("tests/foo.vcf.gz")
         df.to_json("nodes.json", orient = "records", indent = 2)
 
@@ -156,8 +160,6 @@ def main():
     # and remove all parts
     for file in glob.glob("vcfpart-*"):
         os.remove(file)
-
-    df = pdbio_vcf2df(infile)
 
     # TODO: Add this to a weekly `cron` and send e-mail notification upon run
     # completion.
