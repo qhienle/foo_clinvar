@@ -43,11 +43,9 @@ def parse_arguments():
     if args.version:
         print(__file__ + " version " + __version__)
         sys.exit()
-    elif args.url == None:
+    elif args.url is None:
         args.url = "ftp://ftp.ncbi.nlm.nih.gov/pub/clinvar/vcf_GRCh38/weekly/clinvar.vcf.gz"
-        print("No FTP URL provided. Using default " + args.url)
-    else:
-        pass
+        print(f"No FTP URL provided. Using default {args.url}")
     return args
 
 def remove_previous():
@@ -67,20 +65,19 @@ def split_file(gzfile, max_lines=10000):
     count_files = 1
     outfiles = []
     with gzip.open(gzfile, "rb") as gz:
-        outfile = "part-" + str(count_files) + ".vcf"
+        outfile = f"part-{count_files}.vcf"
         part = open(outfile, "wb")
         for line in gz:
             if count_lines <= max_lines:
-                part.write(line)
                 count_lines += 1
             else:
                 part.close()
                 outfiles.append(outfile)
                 count_lines = 1
                 count_files += 1
-                outfile = "part-" + str(count_files) + ".vcf"
+                outfile = f"part-{count_files}.vcf"
                 part = open(outfile, "wb")
-                part.write(line)
+            part.write(line)
         part.close()
         outfiles.append(outfile)
     return outfiles
@@ -139,7 +136,6 @@ def main():
     # shape, before converting to JSON.
 
     for part in vcf_parts:
-        count = 0
         print("Processing " + part)
         #df = pdbio_vcf2df("tests/foo.vcf.gz")
         df = pdbio_vcf2df(part)
@@ -150,9 +146,7 @@ def main():
         links.to_json("links.json", orient="records", indent = 2)
 
         os.remove(part)
-        # For the sake of example, we only process the first file
-        # TODO: adapt this for loop for multiprocessing/job arrays
-        count += 1
+        count = 0 + 1
         if count >= 1:
             break
 
