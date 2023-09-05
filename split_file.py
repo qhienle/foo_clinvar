@@ -13,20 +13,19 @@ class FileSplitter:
         count_files = 1
         outfiles = []
         with gzip.open(gzfile, "rb") as gz:
-            outfile = "part-" + str(count_files) + ".vcf"
+            outfile = f"part-{count_files}.vcf"
             part = open(outfile, "wb")
             for line in gz:
                 if count_lines <= max_lines:
-                    part.write(line)
                     count_lines += 1
                 else:
                     part.close()
                     outfiles.append(outfile)
                     count_lines = 1
                     count_files += 1
-                    outfile = "part-" + str(count_files) + ".vcf"
+                    outfile = f"part-{count_files}.vcf"
                     part = open(outfile, "wb")
-                    part.write(line)
+                part.write(line)
             part.close()
             outfiles.append(outfile)
         return outfiles
